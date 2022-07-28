@@ -1,0 +1,15 @@
+diff --git a/bridge/discord/discord.go b/bridge/discord/discord.go
+index 5ae6c572..b77d8637 100644
+--- a/bridge/discord/discord.go
++++ b/bridge/discord/discord.go
+@@ -334,8 +334,9 @@ func (b *Bdiscord) handleEventBotUser(msg *config.Message, channelID string) (st
+ 		return msg.ID, err
+ 	}
+ 
++	// fuck this, damn it
+ 	m := discordgo.MessageSend{
+-		Content:         msg.Username + msg.Text,
++		Content:         msg.Username + ": " + msg.Text,
+ 		AllowedMentions: b.getAllowedMentions(),
+ 	}
+ 

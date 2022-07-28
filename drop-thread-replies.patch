@@ -1,0 +1,20 @@
+diff --git a/bridge/slack/handlers.go b/bridge/slack/handlers.go
+index 225931d4..9b91e361 100644
+--- a/bridge/slack/handlers.go
++++ b/bridge/slack/handlers.go
+@@ -171,6 +171,15 @@ func (b *Bslack) skipMessageEvent(ev *slack.MessageEvent) bool {
+ 		return true
+ 	}
+ 
++	// hack: drop all thread replies that weren't sent to channel
++	if ev.ThreadTimestamp != "" && ev.SubType != slack.MsgSubTypeThreadBroadcast {
++		return true
++	}
++	// hackier: drop edits to thread replies (as above)
++	if ev.SubType == slack.MsgSubTypeMessageChanged && (ev.SubMessage.ThreadTimestamp != "" && ev.SubMessage.SubType != slack.MsgSubTypeThreadBroadcast) {
++		return true
++	}
++
+ 	if len(ev.Files) > 0 {
+ 		return b.filesCached(ev.Files)
+ 	}

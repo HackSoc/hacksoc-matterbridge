@@ -1,0 +1,17 @@
+diff --git a/bridge/slack/slack.go b/bridge/slack/slack.go
+index c39c6082..c2a580a9 100644
+--- a/bridge/slack/slack.go
++++ b/bridge/slack/slack.go
+@@ -529,6 +529,12 @@ func (b *Bslack) prepareMessageOptions(msg *config.Message) []slack.MsgOption {
+ 	)
+ 	opts = append(opts, slack.MsgOptionAttachments(attachments...))
+ 	opts = append(opts, slack.MsgOptionPostMessageParameters(params))
++
++	// hack: send replies to channel always
++	if msg.ParentID != "" {
++		opts = append(opts, slack.MsgOptionBroadcast())
++	}
++
+ 	return opts
+ }
+ 
