@@ -1,12 +1,18 @@
 diff --git a/bridge/discord/discord.go b/bridge/discord/discord.go
-index 5ae6c572..b77d8637 100644
+index 5ae6c572..36c4e569 100644
 --- a/bridge/discord/discord.go
 +++ b/bridge/discord/discord.go
-@@ -334,8 +334,9 @@ func (b *Bdiscord) handleEventBotUser(msg *config.Message, channelID string) (st
+@@ -330,12 +330,14 @@ func (b *Bdiscord) handleEventBotUser(msg *config.Message, channelID string) (st
+ 
+ 	// Edit message
+ 	if msg.ID != "" {
+-		_, err := b.c.ChannelMessageEdit(channelID, msg.ID, msg.Username+msg.Text)
++		// hack: add a seperator
++		_, err := b.c.ChannelMessageEdit(channelID, msg.ID, msg.Username + ": " + msg.Text)
  		return msg.ID, err
  	}
  
-+	// fuck this, damn it
++	// hack: add a seperator
  	m := discordgo.MessageSend{
 -		Content:         msg.Username + msg.Text,
 +		Content:         msg.Username + ": " + msg.Text,
